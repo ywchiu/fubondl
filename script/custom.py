@@ -38,7 +38,7 @@ from mrcnn.visualize import display_instances
 import matplotlib.pyplot as plt
 
 # Root directory of the project
-ROOT_DIR = os.path.abspath("../../")
+ROOT_DIR = os.path.abspath("./")
 
 # Import Mask RCNN
 sys.path.append(ROOT_DIR)  # To find local version of the library
@@ -176,7 +176,7 @@ class CustomDataset(utils.Dataset):
             super(self.__class__, self).image_reference(image_id)
 
 
-def train(model):
+def train(model, epochs = 10):
     """Train the model."""
     # Training dataset.
     dataset_train = CustomDataset()
@@ -195,7 +195,7 @@ def train(model):
     print("Training network heads")
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
-                epochs=20,
+                epochs=epochs,
                 layers='heads')
 
 
@@ -357,14 +357,11 @@ if __name__ == '__main__':
             "mrcnn_class_logits", "mrcnn_bbox_fc",
             "mrcnn_bbox", "mrcnn_mask"])
     else:
-        print('===================')
-        print('path',weights_path)
-        print('===================')
         model.load_weights(weights_path, by_name=True)
 
     # Train or evaluate
     if args.command == "train":
-        train(model)
+        train(model, args.epoch)
     elif args.command == "splash":
         detect_and_color_splash(model, image_path=args.image,
                                 video_path=args.video)
