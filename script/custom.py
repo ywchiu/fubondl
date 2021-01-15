@@ -176,7 +176,7 @@ class CustomDataset(utils.Dataset):
             super(self.__class__, self).image_reference(image_id)
 
 
-def train(model, epochs = 10):
+def train(model):
     """Train the model."""
     # Training dataset.
     dataset_train = CustomDataset()
@@ -195,7 +195,7 @@ def train(model, epochs = 10):
     print("Training network heads")
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
-                epochs=epochs,
+                epochs=20,
                 layers='heads')
 
 
@@ -361,7 +361,7 @@ if __name__ == '__main__':
 
     # Train or evaluate
     if args.command == "train":
-        train(model, args.epoch)
+        train(model)
     elif args.command == "splash":
         detect_and_color_splash(model, image_path=args.image,
                                 video_path=args.video)
